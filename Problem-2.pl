@@ -19,7 +19,7 @@ grid(W, H, R):-
 % printing with style
 printGrid(GW,GH,C,[]):-!.
 printGrid(GW,GH,C,[H|T]):-
-	write(H), write(' '),
+	write(H), write('  '),
 	A is C + 1,
 	((A mod GW =:= 0)
 		-> nl, printGrid(GW,GH,A,T)
@@ -48,13 +48,20 @@ splt_(T, NewN, LR, L2),
 append(LR, [H], L1).
 
 % add a dot
-dot(L,[],G,G2):-!.
-dot(L,[H|T],G,G2):-
-	splt([1, 2, 3, 4, 5], H, L1, L2).
+dot(L,P,W,G,G2):-
+	nth0(0,P,PH), nth0(1,P,PW),
+	M is W*PH+PW,
+	splt(G, M, L1, [H|T]),
+	append(L1,[L],G1),
+	append(G1,T,G2).
 
 % test go(4,3,[3,1],[2,2]).
 go(GH,GW,A,B):-
 	grid(GW,GH,G),
+	dot('G',A,GW,G,G1),
+	dot('G',B,GW,G1,G2),
+
 	write("Game:"), nl,
-	printGrid(GW,GH,0,G).
-	%dot('G', A, G, NewG).
+	printGrid(GW,GH,0,G2).
+
+	# solution steps using A*
