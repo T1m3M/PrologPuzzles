@@ -55,13 +55,25 @@ dot(L,P,W,G,G2):-
 	append(L1,[L],G1),
 	append(G1,T,G2).
 
+
 % test go(4,3,[3,1],[2,2]).
 go(GH,GW,A,B):-
 	grid(GW,GH,G),
-	dot('G',A,GW,G,G1),
-	dot('G',B,GW,G1,G2),
+	dot('G',A,GW,G,Goal),
+	dot('G',B,GW,G,Start),
+	dot('G',B,GW,Goal,All),
 
 	write("Game:"), nl,
-	printGrid(GW,GH,0,G2).
+	printGrid(GW,GH,0,All), nl,
 
-	# solution steps using A*
+	% solution steps using A*
+	getHeuristic(Start, H, Goal),
+	write(H), nl.
+
+
+getHeuristic([], 0, []):-!.
+getHeuristic([H|T1],V,[H|T2]):-!,
+	getHeuristic(T1,V, T2).
+
+getHeuristic([_|T1],H,[_|T2]):-!,
+	H is 1.
