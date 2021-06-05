@@ -49,12 +49,15 @@ append(LR, [H], L1).
 
 % add a dot
 dot(L,P,W,G,G2):-
-	nth0(0,P,PH), nth0(1,P,PW),
-	M is W*PH+PW,
+	getGIndex(P,W,M),
 	splt(G, M, L1, [H|T]),
 	append(L1,[L],G1),
 	append(G1,T,G2).
 
+
+getGIndex(P,W,R):-
+	nth0(0,P,PH), nth0(1,P,PW),
+	R is W*PH+PW.
 
 % test go(4,3,[3,1],[2,2]).
 go(GH,GW,A,B):-
@@ -68,7 +71,8 @@ go(GH,GW,A,B):-
 
 	% solution steps using A*
 	getHeuristic(Start, H, Goal),
-	write(H), nl.
+	getGIndex(B,GW,I),
+	write(I),nl.
 
 
 getHeuristic([], 0, []):-!.
